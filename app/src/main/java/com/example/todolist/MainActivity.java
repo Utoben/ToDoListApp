@@ -17,6 +17,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayoutNotes;
     private FloatingActionButton butttonAddNote;
+    private Database database = Database.getInstance();
     private ArrayList<Note> notes = new ArrayList<>();
 
     @Override
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             Note note = new Note(i,"Note" + i, random.nextInt(3) );
             notes.add(note);
         }
-        showNotes();
+//        showNotes();
 
         butttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +42,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+@   Override
+    protected void onResume(){
+        super.onResume();
+        showNotes();
+    }
+
     private  void showNotes(){
-        for(Note note : notes){
+        linearLayoutNotes.removeAllViews();
+        for(Note note : database.getNotes() ){
            View view = getLayoutInflater().inflate(
                    R.layout.note_item,
                    linearLayoutNotes,
